@@ -2,7 +2,7 @@
 
 [Arxiv23] EpiDiff: Enhancing Multi-View Synthesis via Localized Epipolar-Constrained Diffusion
 
-## 🏠 <a href="https://huanngzh.github.io/EpiDiff/" target="_blank">Project Page</a> | <a href="" target="_blank">Paper</a>
+## 🏠 <a href="https://huanngzh.github.io/EpiDiff/" target="_blank">Project Page</a> | <a href="https://arxiv.org/abs/2312.06725" target="_blank">Paper</a>
 
 ![img:teaser](assets/teaser.png)
 
@@ -31,5 +31,10 @@ We appreciate the open source of the following projects:
 If you find this repository useful, please consider citing:
 
 ```
-
+@misc{huang2023epidiff,
+    title={EpiDiff: Enhancing Multi-View Synthesis via Localized Epipolar-Constrained Diffusion},
+    author={Zehuan Huang and Hao Wen and Junting Dong and Yaohui Wang and Yangguang Li and Xinyuan Chen and Yan-Pei Cao and Ding Liang and Yu Qiao and Bo Dai and Lu Sheng},
+    journal={arXiv preprint arXiv:2312.06725},
+    year={2023}
+}
 ```
