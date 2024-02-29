@@ -1,6 +1,6 @@
 # EpiDiff
 
-[Arxiv23] EpiDiff: Enhancing Multi-View Synthesis via Localized Epipolar-Constrained Diffusion
+[CVPR 2024] EpiDiff: Enhancing Multi-View Synthesis via Localized Epipolar-Constrained Diffusion
 
 ## 🏠 <a href="https://huanngzh.github.io/EpiDiff/" target="_blank">Project Page</a> | <a href="https://arxiv.org/abs/2312.06725" target="_blank">Paper</a>
 
