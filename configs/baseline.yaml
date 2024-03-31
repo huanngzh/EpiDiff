@@ -1,0 +1,104 @@
+name: epidiff
+tags: ["lvis", "stable-zero123", "n16f16", "pabs"]
+version: epidiff-stable-zero123-n16f16-pabs
+output_dir: "outputs/${name}"
+
+extras:
+  # for dataset
+  num_views: 17
+  k_near_views: 16
+  sample_views_mode: [4, 10, 16, 22, 28, 34, 40, 46, 52, 58, 64, 70, 76, 82, 88, 94]
+  img_wh: [256, 256]
+  bg_color: white
+
+data:
+  _target_: epidiff.data.multiview.MultiViewDataModule
+  train_dataset:
+    _target_: epidiff.data.multiview.MultiViewDataset
+    root_dir: data/render_lvis_hzh
+    img_wh: ${extras.img_wh}
+    bg_color: ${extras.bg_color}
+    num_views: ${extras.num_views}
+    k_near_views: ${extras.k_near_views}
+    ref_view_mode: 64
+    sample_views_mode: ${extras.sample_views_mode}
+    caption_path: data/render_lvis_hzh/caption_train.txt
+    use_abs_elevation: true # for stable zero123
+  train_batch_size: 1
+  val_dataset:
+    _target_: epidiff.data.multiview.MultiViewDataset
+    root_dir: data/render_lvis_hzh
+    img_wh: ${extras.img_wh}
+    bg_color: ${extras.bg_color}
+    num_views: ${extras.num_views}
+    k_near_views: ${extras.k_near_views}
+    ref_view_mode: 64
+    sample_views_mode: ${extras.sample_views_mode}
+    caption_path: data/render_lvis_hzh/caption_val.txt
+    use_abs_elevation: true # for stable zero123
+    num_samples: 50
+  val_batch_size: 1
+  test_dataset:
+    _target_: epidiff.data.multiview.MultiViewDataset
+    root_dir: data/GSO/render_96v
+    img_wh: ${extras.img_wh}
+    bg_color: ${extras.bg_color}
+    num_views: ${extras.num_views}
+    k_near_views: ${extras.k_near_views}
+    ref_view_mode: 64
+    sample_views_mode: ${extras.sample_views_mode}
+    caption_path: data/GSO/gso_captions_test.txt
+    use_abs_elevation: true
+  test_batch_size: 1
+  num_workers: 64
+  pin_memory: true
+
+system:
+  _target_: epidiff.systems.i2mv_system.I2MVSystem
+  base_model_id: "ashawkey/stable-zero123-diffusers"
+  mv_model:
+    _target_: epidiff.models.mv_model.MVModel
+    _partial_: true
+    cp_block_model:
+      _target_: epidiff.models.extras.feature_aggregator.FeatureAggregator
+      _partial_: true
+      depth: 2
+      use_resnet: true
+      use_fhw_attn: false
+      pos_encs: ["abs"] # ["abs", "ref"]
+    insert_stages: ["mid", "up"]
+    insert_up_layers: [0, 1, 2, 3]
+    use_residual: false
+    render_options:
+      n_samples: 8
+  lr: 1e-5
+  cfg: 0.1
+  report_to: wandb
+
+trainer:
+  _target_: lightning.pytorch.trainer.Trainer
+  default_root_dir: ${output_dir}
+  max_steps: 30001
+  check_val_every_n_epoch: 1
+  log_every_n_steps: 10
+  num_sanity_val_steps: 1
+  enable_progress_bar: true
+  strategy: ddp_find_unused_parameters_true
+  accelerator: gpu
+  precision: 16-mixed # mixed precision for extra speed-up
+  accumulate_grad_batches: 4
+  gradient_clip_val: 1.0
+
+callbacks:
+  model_checkpoint:
+    _target_: lightning.pytorch.callbacks.ModelCheckpoint
+    save_top_k: -1
+    every_n_train_steps: 10000
+    dirpath: "${output_dir}/${version}/checkpoints"
+
+logger:
+  wandb:
+    _target_: lightning.pytorch.loggers.wandb.WandbLogger
+    project: "${name}"
+    save_dir: ${output_dir}
+    name: "${version}"
