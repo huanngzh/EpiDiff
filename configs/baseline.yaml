@@ -5,9 +5,9 @@ output_dir: "outputs/${name}"
 
 extras:
   # for dataset
-  num_views: 17
-  k_near_views: 16
-  sample_views_mode: [4, 10, 16, 22, 28, 34, 40, 46, 52, 58, 64, 70, 76, 82, 88, 94]
+  num_views: 17 # 1 reference view + 16 sampling views
+  k_near_views: 16 # our baseline uses 16 nearest views
+  sample_views_mode: [4, 10, 16, 22, 28, 34, 40, 46, 52, 58, 64, 70, 76, 82, 88, 94] # view indexs for sampling
   img_wh: [256, 256]
   bg_color: white
 

@@ -85,7 +85,7 @@ def prepare_inputs(input_img: str, input_elevation: float, sample_views_mode: st
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, default="configs/i2mv.yaml")
+    parser.add_argument("--config", type=str, default="configs/baseline.yaml")
     parser.add_argument("--ckpt", type=str, required=True)
     parser.add_argument("--input_img", type=str, required=True)
     parser.add_argument("--output_dir", type=str, required=True)
@@ -93,7 +93,6 @@ def main():
     parser.add_argument(
         "--sample_views_mode", type=str, choices=["ele30"], default="ele30"
     )
-
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", type=str, default="cuda")
     args, extras = parser.parse_known_args()
