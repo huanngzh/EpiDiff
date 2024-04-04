@@ -16,7 +16,7 @@ Abstract: _We propose EpiDiff, a localized interactive multiview diffusion model
 
 ## 🔥 Updates
 
-- 2024-04-02: Training code, inference code and model checkpoint of our baseline EpiDiff are released.
+- 2024-04-02: Training code, inference code and model checkpoint of our baseline EpiDiff are released. The model is trained on 16 fixed views and aggregates F=16 views to target view.
 
 ## 🔧 Installation
 

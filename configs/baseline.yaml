@@ -1,6 +1,7 @@
 name: epidiff
 tags: ["lvis", "stable-zero123", "n16f16", "pabs"]
 version: epidiff-stable-zero123-n16f16-pabs
+description: "Baseline config for epidiff. Trained on LVIS dataset with 16 fixed rendered views in a fixed elevation of 30. Epipolar constrained among 16 nearest views. Use absolute elevation for stable zero123."
 output_dir: "outputs/${name}"
 
 extras:
